@@ -16,7 +16,7 @@ If you specify the -r option the file will be sent over and over again at the sp
 
 - node.js and npm from http://nodejs.org
 
-- Build tools: The npm serialport module install requires a compiler; see this link for build tool requirements for your platform:
+- Build tools: The node-serialport module install requires a compiler; see this link for build tool requirements for your platform:
 
 	https://github.com/voodootikigod/node-serialport
 

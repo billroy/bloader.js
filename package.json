@@ -1,15 +1,14 @@
 {
-	"name": "bitty.js",
+	"name": "bloader.js",
 	"preferGlobal": "false",
 	"version": "0.1.0",
 	"author": "Bill Roy <bill@bitlash.net>",
-	"description": "web serial terminal for arduino",
+	"description": "file loader and serial terminal for arduino",
 	"scripts": {
-		"start": "node index"
+		"start": "node bloader"
 	},
 	"dependencies" : {
 		"serialport": ">=0.7.3",
-		"node-expect": ">=0.1.0",
 		"shelljs"	: ">=0.0.5",
 		"optimist"  : ">=0.3.4"
 	},

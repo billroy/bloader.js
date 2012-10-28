@@ -3,6 +3,11 @@
 //
 //	Copyright 2012 Bill Roy (MIT License)
 //
+
+////////////////////
+//
+// Parse the options
+//
 var opt = require('optimist');
 var argv = opt.usage('Usage: $0 [flags]')
 	.alias('p', 'port')
@@ -20,6 +25,11 @@ if (argv.help) {
 	process.exit();
 } 
 
+
+////////////////////
+//
+// Which serial port?
+//
 shell = require("shelljs");
 var portlist, portname;
 
@@ -53,16 +63,27 @@ try {
 }
 
 
+////////////////////
+//
+// Serial port listener
+//
 var lines;		// array of commands to send to target
 
 port.on('data', function(data) {	// port input goes to stdout
 	process.stdout.write(data);
+
+	// when we see the prompt go by, send the next command if we have one
 	if (lines && lines.length && data.toString().match("\n> ")) {
 		var line = lines.shift();
 		port.write(line + '\n');
 	}
 });
 
+
+////////////////////
+//
+// Send file
+//
 var fs = require('fs');
 function sendFile(filename) {
 	var filetext = fs.readFileSync(argv.file, 'utf8');		// specifying 'utf8' to get a string result
@@ -70,14 +91,11 @@ function sendFile(filename) {
 	port.write('\n');	// get a prompt
 }
 
-////////////////////
-//
-// Send file
-//
 if (argv.file) {
 	sendFile(argv.file);
 	if (argv.repeat) setInterval(sendFile, argv.repeat*1000, argv.file);
 }
+
 
 ////////////////////
 //
