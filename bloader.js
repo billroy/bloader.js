@@ -67,15 +67,26 @@ try {
 //
 // Serial port listener
 //
+var prompt = "\n> ";
 var lines;		// array of commands to send to target
+var instream;
 
 port.on('data', function(data) {	// port input goes to stdout
 	process.stdout.write(data);
 
+	//console.log("Data: [" + data + "]");
+	instream = "" + instream + data.toString();
+
 	// when we see the prompt go by, send the next command if we have one
-	if (lines && lines.length && data.toString().match("\n> ")) {
-		var line = lines.shift();
-		port.write(line + '\n');
+	if (lines && lines.length) {
+		var match = instream.match(prompt);
+		if (match != undefined) {
+//console.log(match);
+			var line = lines.shift();
+			port.write(line + '\n');
+			//instream.slice(match.index);
+			instream = "";
+		}
 	}
 });
 
@@ -87,11 +98,15 @@ port.on('data', function(data) {	// port input goes to stdout
 var fs = require('fs');
 var url = require('url');
 var http = require('http');
+var https = require('https');
 
 function sendFile(filename) {
 
 	// If the file begins with http: fetch it from the web
-	if (filename.indexOf("http:") == 0) {
+	var is_http = filename.indexOf("http://") == 0;
+	var is_https = filename.indexOf("https://") == 0;
+
+	if (is_http || is_https) {
 
 		var target = url.parse(filename);
 		//console.log(target);
@@ -102,12 +117,11 @@ function sendFile(filename) {
 			method: 'GET'
 		};
 
-		var req = http.request(options, function(res) {
-			//console.log('STATUS: ' + res.statusCode);
-			//console.log('HEADERS: ' + JSON.stringify(res.headers));
+		var client = http;
+		if (is_https) client = https;
+		var req = client.request(options, function(res) {
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
-				//console.log('BODY: ' + chunk);
 				lines = chunk.split('\n')
 				port.write('\n');	// get a prompt
 			});
