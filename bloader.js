@@ -112,10 +112,10 @@ function sendFile(filename) {
 		//console.log(target);
 		var options = {
 			host: target.host,
-			port: target.port | 80,
 			path: target.path,
 			method: 'GET'
 		};
+		if (target.port) options.port = target.port;
 
 		var client = http;
 		if (is_https) client = https;

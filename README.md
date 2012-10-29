@@ -54,6 +54,10 @@ Load a file over the web
 
 	> node bloader -f http://example.com/bitlash/testfile
 
+Load the Bitlash elevator example direct from github:
+
+	> node bloader -f https://raw.github.com/billroy/bitlash/master/bitlashcode/elevator2.btl
+
 Send a file every 10 seconds
 
 	> node bloader -f lcdupdate -r 10
