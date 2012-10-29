@@ -15,7 +15,7 @@ var argv = opt.usage('Usage: $0 [flags]')
 	.alias('b', 'baud')
 	.describe('b', 'virtual serial port baud rate')
 	.alias('f', 'file')
-	.describe('f', 'file to send')
+	.describe('f', 'file or URL to send')
 	.alias('r', 'repeat')
 	.describe('r', 'interval to re-send file (seconds)')
 	.argv;
@@ -85,10 +85,44 @@ port.on('data', function(data) {	// port input goes to stdout
 // Send file
 //
 var fs = require('fs');
+var url = require('url');
+var http = require('http');
+
 function sendFile(filename) {
-	var filetext = fs.readFileSync(argv.file, 'utf8');		// specifying 'utf8' to get a string result
-	lines = filetext.split('\n');
-	port.write('\n');	// get a prompt
+
+	// If the file begins with http: fetch it from the web
+	if (filename.indexOf("http:") == 0) {
+
+		var target = url.parse(filename);
+		//console.log(target);
+		var options = {
+			host: target.host,
+			port: target.port | 80,
+			path: target.path,
+			method: 'GET'
+		};
+
+		var req = http.request(options, function(res) {
+			//console.log('STATUS: ' + res.statusCode);
+			//console.log('HEADERS: ' + JSON.stringify(res.headers));
+			res.setEncoding('utf8');
+			res.on('data', function (chunk) {
+				//console.log('BODY: ' + chunk);
+				lines = chunk.split('\n')
+				port.write('\n');	// get a prompt
+			});
+		});
+		req.on('error', function(e) {
+			console.log('problem with request: ' + e.message);
+			process.exit(-3);
+		});
+		req.end();
+	}
+	else {		// local file
+		var filetext = fs.readFileSync(argv.file, 'utf8');		// specifying 'utf8' to get a string result
+		lines = filetext.split('\n');
+		port.write('\n');	// get a prompt
+	}
 }
 
 if (argv.file) {

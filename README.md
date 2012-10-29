@@ -3,7 +3,7 @@ bloader.js
 
 Bitlash serial program loader for Arduino / usbserial.
 
-Transmits a file you specify, one line at at time, to Bitlash over the usb serial port.
+Transmits a file (which can be local or the contents of a given web URL) you specify, one line at at time, to Bitlash over the usb serial port.
 
 The file can be function definitions or live commands to execute.  Same thing, right?
 
@@ -49,6 +49,10 @@ Go straight to interactive mode:
 Load a file, drop into interactive mode:
 
 	> node bloader -f testfile
+
+Load a file over the web
+
+	> node bloader -f http://example.com/bitlash/testfile
 
 Send a file every 10 seconds
 
