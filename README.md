@@ -23,13 +23,11 @@ If you specify the -r option the file will be sent over and over again at the sp
 
 # Install
 
-	> git clone https://github.com/billroy/bloader.js.git
-	> cd bloader
-	> npm install
+	> sudo npm install bloader -g
 
 ## Usage
 
-	> node bloader --help
+	> bloader --help
 	Usage: node ./bloader [flags]
 	
 	Options:
@@ -44,20 +42,20 @@ To exit, type Control+].
 
 Go straight to interactive mode:
 
-	> node bloader
+	> bloader
 
 Load a file, drop into interactive mode:
 
-	> node bloader -f testfile
+	> bloader -f testfile
 
 Load a file over the web
 
-	> node bloader -f http://example.com/bitlash/testfile
+	> bloader -f http://example.com/bitlash/testfile
 
 Load the Bitlash elevator example direct from github:
 
-	> node bloader -f https://raw.github.com/billroy/bitlash/master/bitlashcode/elevator2.btl
+	> bloader -f https://raw.github.com/billroy/bitlash/master/bitlashcode/elevator2.btl
 
 Send a file every 10 seconds
 
-	> node bloader -f lcdupdate -r 10
+	> bloader -f lcdupdate -r 10

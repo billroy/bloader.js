@@ -2,7 +2,7 @@
 	"name": "bloader",
 	"preferGlobal": "true",
 	"public": "true",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "file loader and serial terminal for arduino",
 	"author": {
 		"name": "Bill Roy",
@@ -19,15 +19,10 @@
 		"type": "MIT",
 		"url": "https://raw.github.com/billroy/bloader.js/master/LICENSE"
 	},
-	"main": "./index.js",
-	"scripts": {
-		"start": "forever start index.js",
-		"stop": "forever stop index.js"
-	}, 
+	"main": "./bloader.js",
 	"bin": {
 		"bloader": "./bloader.js"
 	},
-
 	"dependencies" : {
 		"serialport": ">=0.7.3",
 		"shelljs"	: ">=0.0.5",
