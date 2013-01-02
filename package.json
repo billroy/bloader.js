@@ -1,18 +1,39 @@
 {
 	"name": "bloader.js",
-	"preferGlobal": "false",
+	"preferGlobal": "true",
+	"public": "true",
 	"version": "0.1.0",
-	"author": "Bill Roy <bill@bitlash.net>",
 	"description": "file loader and serial terminal for arduino",
-	"scripts": {
-		"start": "node bloader"
+	"author": {
+		"name": "Bill Roy",
+		"email": "bill@bitlash.net"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/billroy/bloader.js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/billroy/bloader.js/issues"
+	},
+	"licenses": {
+		"type": "MIT",
+		"url": "https://raw.github.com/billroy/bloader.js/master/LICENSE"
+	},
+	"main": "./index.js",
+	"scripts": {
+		"start": "forever start index.js",
+		"stop": "forever stop index.js"
+	}, 
+	"bin": {
+		"bloader": "./bloader.js"
+	},
+
 	"dependencies" : {
 		"serialport": ">=0.7.3",
 		"shelljs"	: ">=0.0.5",
 		"optimist"  : ">=0.3.4"
 	},
 	"engine": {
-		"node": ">=0.6"
+		"node": ">=0.8"
 	}
 }

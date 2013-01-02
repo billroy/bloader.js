@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 //
 // bloader.js: node.js-based file loader and command line shell for arduino
 //
@@ -81,10 +82,8 @@ port.on('data', function(data) {	// port input goes to stdout
 	if (lines && lines.length) {
 		var match = instream.match(prompt);
 		if (match != undefined) {
-//console.log(match);
 			var line = lines.shift();
 			port.write(line + '\n');
-			//instream.slice(match.index);
 			instream = "";
 		}
 	}
@@ -93,7 +92,20 @@ port.on('data', function(data) {	// port input goes to stdout
 
 ////////////////////
 //
-// Send file
+// Keyboard / stdin listener
+//
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+process.stdin.setRawMode(true);			// pass ^C through to serial port
+process.stdin.on('data', function (data) {	// keyboard input goes to port
+	if (data === '\x1d') process.exit(0);	// ^] to quit
+	else if (port) port.write(data);
+});
+
+
+////////////////////
+//
+// Send file or contents of URL
 //
 var fs = require('fs');
 var url = require('url');
@@ -142,22 +154,4 @@ function sendFile(filename) {
 if (argv.file) {
 	sendFile(argv.file);
 	if (argv.repeat) setInterval(sendFile, argv.repeat*1000, argv.file);
-}
-
-
-////////////////////
-//
-// Enter terminal mode
-//
-if (port) {
-//	port.on('data', function(data) {	// port input goes to stdout
-//		process.stdout.write(data);
-//	});
-	process.stdin.resume();
-	process.stdin.setEncoding('utf8');
-	process.stdin.setRawMode(true);			// pass ^C through to serial port
-	process.stdin.on('data', function (data) {	// keyboard input goes to port
-		if (data === '\x1d') process.exit(0);	// ^] to quit
-		else if (port) port.write(data);
-	});
 }
