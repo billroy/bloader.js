@@ -19,6 +19,8 @@ var argv = opt.usage('Usage: $0 [flags]')
 	.describe('f', 'file or URL to send')
 	.alias('r', 'repeat')
 	.describe('r', 'interval to re-send file (seconds)')
+	.alias('l', 'logfile')
+	.describe('l', 'enables serial data capture to the given filename')
 	.argv;
 
 if (argv.help) {
@@ -73,9 +75,17 @@ var lines;		// array of commands to send to target
 var instream;
 
 port.on('data', function(data) {	// port input goes to stdout
-	process.stdout.write(data);
 
 	//console.log("Data: [" + data + "]");
+	process.stdout.write(data);
+	if (argv.logfile) {
+		fs.appendFile(argv.logfile, data, function (err) {
+			if (err) console.log('LOG FILE WRITE ERROR:', data_record);
+			else {;}
+		});
+
+	}
+
 	instream = "" + instream + data.toString();
 
 	// when we see the prompt go by, send the next command if we have one
