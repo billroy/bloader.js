@@ -2,7 +2,7 @@
 	"name": "bloader",
 	"preferGlobal": "true",
 	"public": "true",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "file loader and serial terminal for arduino",
 	"author": {
 		"name": "Bill Roy",

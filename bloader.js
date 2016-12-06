@@ -26,7 +26,7 @@ var argv = opt.usage('Usage: $0 [flags]')
 if (argv.help) {
 	opt.showHelp();
 	process.exit();
-} 
+}
 
 
 ////////////////////
@@ -54,7 +54,7 @@ portname = portlist[0];
 //
 // Open serial port
 //
-var SerialPort = require('serialport').SerialPort;
+var SerialPort = require('serialport');
 try {
 	var port = new SerialPort(portname, {
 		baudrate: argv.baud || 57600,
